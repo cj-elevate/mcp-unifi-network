@@ -531,12 +531,26 @@ export class UniFiClient {
       }
 
       // Traditional UniFi Network Application API format
-      const apiResponse = response.data as APIResponse<SystemInfo>;
+      const apiResponse = response.data as APIResponse<any>;
       if (apiResponse.meta.rc !== 'ok' || !apiResponse.data.length) {
         throw new UniFiMCPError('Failed to retrieve system information', ErrorCode.SYSTEM_INFO_ERROR);
       }
 
-      return apiResponse.data[0];
+      // Map API response fields to SystemInfo interface
+      const rawData = apiResponse.data[0];
+      return {
+        version: rawData.version || 'Unknown',
+        buildNumber: rawData.build || '0',
+        buildTimestamp: Date.now(),
+        hostname: rawData.hostname || rawData.name || 'UniFi Device',
+        timezone: rawData.timezone || 'UTC',
+        uptime: rawData.uptime || 0,
+        firewallMode: 'zbf',
+        zbfSupported: true,
+        hardwareModel: rawData.ubnt_device_type || rawData.hardware_model || 'Unknown',
+        hardwareRevision: rawData.hardware_revision || '1.0',
+        ubntNetworkApplicationVersion: rawData.version || '1.0.0'
+      } as SystemInfo;
     } catch (error) {
       if (error instanceof UniFiMCPError) {
         throw error;

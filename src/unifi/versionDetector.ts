@@ -381,6 +381,7 @@ export class VersionDetector {
 
     switch (feature) {
       case 'zbf':
+      case 'zone-based-firewall':
         if (!capabilities.supportsZBF) {
           throw new FeatureNotSupportedError(
             'Zone-Based Firewall',

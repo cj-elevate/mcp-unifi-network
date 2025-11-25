@@ -11,7 +11,7 @@
 
 export const UNIFI_ENDPOINTS = {
   // System Information
-  SYSTEM_INFO: '/api/system',
+  SYSTEM_INFO: '/proxy/network/api/s/{site}/stat/sysinfo',  // Network Application endpoint
   SYSTEM_STATS: '/api/system/stats',
   
   // Authentication
@@ -41,10 +41,10 @@ export const UNIFI_ENDPOINTS = {
   FIREWALL_GROUPS: '/proxy/network/api/s/{site}/rest/firewallgroup',
   
   // Zone-Based Firewall (9.0+)
-  FIREWALL_ZONES: '/proxy/network/api/s/{site}/rest/firewallzone',
-  FIREWALL_ZONE_DETAILS: '/proxy/network/api/s/{site}/rest/firewallzone/{id}',
-  FIREWALL_ZONE_POLICIES: '/proxy/network/api/s/{site}/rest/firewallzonepolicy',
-  FIREWALL_ZONE_POLICY_DETAILS: '/proxy/network/api/s/{site}/rest/firewallzonepolicy/{id}',
+  FIREWALL_ZONES: '/proxy/network/v2/api/site/{site}/firewall/zone',
+  FIREWALL_ZONE_DETAILS: '/proxy/network/v2/api/site/{site}/firewall/zone/{id}',
+  FIREWALL_ZONE_POLICIES: '/proxy/network/v2/api/site/{site}/firewall-policies',
+  FIREWALL_ZONE_POLICY_DETAILS: '/proxy/network/v2/api/site/{site}/firewall-policies/{id}',
   SIMPLE_APP_BLOCK: '/proxy/network/api/s/{site}/rest/simpleappblock',
   
   // Network Management

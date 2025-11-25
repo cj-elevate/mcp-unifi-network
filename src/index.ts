@@ -9,7 +9,7 @@ import { config } from './config/environment.js';
 
 /**
  * UniFi Network MCP Server
- * 
+ *
  * A Model Context Protocol server that provides comprehensive access to UniFi Network API
  * functionality, including support for both legacy firewall rules and the new Zone-Based
  * Firewall (ZBF) system introduced in UniFi Network 9.0+.
@@ -18,7 +18,7 @@ import { config } from './config/environment.js';
 async function main(): Promise<void> {
   try {
     logger.info('Starting UniFi Network MCP Server...');
-    
+
     // Create the MCP server instance
     const server = new Server(
       {
@@ -40,7 +40,7 @@ async function main(): Promise<void> {
     let webServer: UniFiWebServer | undefined;
     const webPort = parseInt(process.env.WEB_PORT || '8100', 10);
     const enableWebServer = process.env.ENABLE_WEB_SERVER !== 'false';
-    
+
     if (enableWebServer) {
       try {
         webServer = new UniFiWebServer(unifiServer, webPort);
@@ -60,7 +60,10 @@ async function main(): Promise<void> {
 
     logger.info(`${config.server.name} v${config.server.version} started successfully`);
     logger.info('Server is ready to accept connections');
-    
+
+    // Keep event loop alive for stdio transport
+    process.stdin.resume();
+
     if (webServer) {
       logger.info('API documentation available at:', {
         docsUrl: `http://localhost:${webPort}/unifi-network/docs`,
@@ -106,6 +109,5 @@ process.on('uncaughtException', (error) => {
 });
 
 // Start the server
-if (import.meta.url === `file://${process.argv[1]}` || process.argv[1]?.endsWith('unifi-mcp-server')) {
-  void main();
-}
+// Always run main() when this file is executed directly
+void main();
